@@ -1,0 +1,31 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+
+<h2>User info</h2>
+@if (User.Identity.IsAuthenticated)
+{
+    @foreach (var item in User.Claims)
+    {
+        <p>
+            <b>@item.Type</b><br />
+            @item.Value<br />
+            <hr />
+        </p>
+    }
+
+    <a class="btn btn-primary" href="@Url.Action("Logout","Auth")"> LogOut</a>
+}
+else
+{
+    <p>
+        <div style="color: red">
+            No Authorize!!!
+        </div>
+    </p>
+}

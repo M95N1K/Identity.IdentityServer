@@ -1,0 +1,48 @@
+﻿@using IdentityServer4.Extensions
+
+@{
+    string name = null;
+    if (!true.Equals(ViewData["signed-out"]))
+    {
+        name = Context.User?.GetDisplayName();
+    }
+
+    string returnUrl = Context.Request.Query["returnUrl"];
+}
+
+@model IEnumerable<MenuViewModel>
+<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+    <div class="container">
+        <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Identity.IdentityServer</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+            <ul class="navbar-nav flex-grow-1">
+                @foreach (var item in Model)
+                {
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area=""
+                           asp-controller="@item.Controller" asp-action="@item.Action">@item.DisplayName</a>
+                    </li>
+                }
+            </ul>
+
+            @if (!string.IsNullOrWhiteSpace(name))
+            {
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">@name <b class="caret"></b></a>
+
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" asp-action="Logout" asp-controller="Auth">Logout</a>
+                        </div>
+                    </li>
+                </ul>}
+        </div>
+    </div>
+</nav>
+@{
+
+}
