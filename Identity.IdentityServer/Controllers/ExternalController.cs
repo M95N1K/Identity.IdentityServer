@@ -201,9 +201,14 @@ namespace HRInPocket.IdentityServer.Controllers
                 filtered.Add(new Claim(JwtClaimTypes.Email, email));
             }
 
+            var giveName = claims.FirstOrDefault(x => x.Type == ClaimTypes.GivenName)?.Value;
+            var familyName = claims.FirstOrDefault(x => x.Type == ClaimTypes.Surname)?.Value;
+
             var user = new User
             {
                 UserName = Guid.NewGuid().ToString(),
+                GivenName = giveName,
+                FamilyName = familyName,
             };
             var identity_result = await _UserManager.CreateAsync(user);
 
