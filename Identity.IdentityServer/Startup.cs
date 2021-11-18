@@ -15,6 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Identity.IdentityServer
@@ -59,12 +60,17 @@ namespace Identity.IdentityServer
             #endregion
 
             #region IdentityServer4
-            var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
-            services.AddIdentityServer(config =>
+
+            services.ConfigureApplicationCookie(config =>
             {
-                config.UserInteraction.LoginUrl = "/auth/login";
-                config.UserInteraction.LogoutUrl = "/auth/logout";
-            })
+                config.LoginPath = "/auth/login";
+                config.LogoutPath = "/auth/logout";
+                config.AccessDeniedPath = "/auth/accessDenied";
+                config.Cookie.Name = "IdentityServer.Cookies";
+            });
+
+            var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
+            services.AddIdentityServer()
                 .AddAspNetIdentity<User>()
                 .AddConfigurationStore(options =>
                 {
@@ -108,7 +114,17 @@ namespace Identity.IdentityServer
                         conf.ClientId = Configuration["Autorize:Google:ClientID"];
                         conf.ClientSecret = Configuration["Autorize:Google:ClientSecret"];
 
-                    }); 
+                    });
+            #endregion
+
+            #region Authorization Policy
+            services.AddAuthorization(config =>
+                {
+                    config.AddPolicy("Administrator", builder =>
+                    {
+                        builder.RequireClaim(ClaimTypes.Role, "Administrator");
+                    });
+                }); 
             #endregion
 
         }
@@ -133,7 +149,9 @@ namespace Identity.IdentityServer
 
             app.UseRouting();
 
-            //app.UseCookiePolicy();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

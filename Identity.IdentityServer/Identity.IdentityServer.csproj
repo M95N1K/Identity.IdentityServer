@@ -26,6 +26,7 @@
 
   <ItemGroup>
     <Folder Include="Data\EntityDb\" />
+    <Folder Include="Infrastructure\ExtensionHelps\" />
   </ItemGroup>
   
 </Project>
