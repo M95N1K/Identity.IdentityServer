@@ -33,12 +33,13 @@ namespace Identity.IdentityServer
                         "clientAPI",
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
+                        IdentityServerConstants.StandardScopes.Email,
                         "role",
                     },
 
-                    AllowedCorsOrigins = { "*/*" },
-                    RedirectUris = { ""},
-                    PostLogoutRedirectUris = {""},
+                    //AllowedCorsOrigins = { "*/*" },
+                    RedirectUris = { "https://localhost:5001/authentication/login-callback"},
+                    PostLogoutRedirectUris = {"https://localhost:5001/authentication/logout-callback"},
                 },
 
                 new Client
@@ -67,21 +68,25 @@ namespace Identity.IdentityServer
             };
 
         internal static IEnumerable<IdentityResource> GetIdentityREsources()
-
         {
             yield return new IdentityResources.OpenId();
             yield return new IdentityResources.Profile();
             yield return new IdentityResource("roles", "User role(s)", new List<string> { "role" });
+            yield return new IdentityResource("email", "User email(s)", new List<string> { "email" });
         }
 
         internal static IEnumerable<ApiScope> GetApiScopes()
         {
             yield return new ApiScope("clientAPI");
+            yield return new ApiScope("role");
+            yield return new ApiScope("email");
         }
 
         internal static IEnumerable<ApiResource> GetApiResources()
         {
             yield return new ApiResource("clientAPI") { Scopes = { "clientAPI" } };
+            yield return new ApiResource("role") { Scopes = { "role" } };
+            yield return new ApiResource("email") { Scopes = { "email" } };
         }
     }
 }
