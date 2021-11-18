@@ -39,7 +39,7 @@ namespace Identity.IdentityServer.Infrastructure.Services
                 claims.AddRange(ProfileClaims(user));
             }
 
-            if (!string.IsNullOrEmpty(scop.FirstOrDefault(s => s == "OrdersApi")))
+            if (!string.IsNullOrEmpty(scop.FirstOrDefault(s => s == "clientAPI")))
             {
                 claims.Add(new Claim(ClaimTypes.Role,role));
             }

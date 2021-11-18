@@ -18,7 +18,7 @@ namespace Identity.IdentityServer
                     ClientId = "client_id",
                     ClientSecrets = {new Secret("client_secrets".Sha256()) },
                     AllowedGrantTypes = GrantTypes.ClientCredentials,
-                    AllowedScopes = {"OrdersApi"}
+                    AllowedScopes = {"clientAPI"}
                 },
 
                 new Client
@@ -30,9 +30,10 @@ namespace Identity.IdentityServer
                     AllowedGrantTypes = GrantTypes.Code,
                     AllowedScopes =
                     {
-                        "OrdersApi",
+                        "clientAPI",
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
+                        "role",
                     },
 
                     AllowedCorsOrigins = { "*/*" },
@@ -48,7 +49,7 @@ namespace Identity.IdentityServer
 
                     AllowedScopes =
                     {
-                        "OrdersApi",
+                        "clientAPI",
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
                         "role",
@@ -75,12 +76,12 @@ namespace Identity.IdentityServer
 
         internal static IEnumerable<ApiScope> GetApiScopes()
         {
-            yield return new ApiScope("OrdersApi");
+            yield return new ApiScope("clientAPI");
         }
 
         internal static IEnumerable<ApiResource> GetApiResources()
         {
-            yield return new ApiResource("OrdersApi") { Scopes = { "OrdersApi" } };
+            yield return new ApiResource("clientAPI") { Scopes = { "clientAPI" } };
         }
     }
 }

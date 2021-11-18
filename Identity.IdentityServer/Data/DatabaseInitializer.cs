@@ -42,7 +42,6 @@ namespace Identity.IdentityServer.Data
             if (result.Succeeded)
             {
                 userManager.AddClaimAsync(user, new Claim(ClaimTypes.Role, "Administrator")).GetAwaiter().GetResult();
-                userManager.AddClaimAsync(user, new Claim(JwtClaimTypes.Scope, "OrdersApi")).GetAwaiter().GetResult();
             }
             
         }
