@@ -21,6 +21,7 @@ namespace Identity.IdentityServer
                     AllowedScopes = {"clientAPI"}
                 },
 
+                 //client_Pkce
                 new Client
                 {
                     ClientId = "client_Pkce",
@@ -72,7 +73,6 @@ namespace Identity.IdentityServer
             yield return new IdentityResources.OpenId();
             yield return new IdentityResources.Profile();
             yield return new IdentityResource("roles", "User role(s)", new List<string> { "role" });
-            yield return new IdentityResource("email", "User email(s)", new List<string> { "email" });
         }
 
         internal static IEnumerable<ApiScope> GetApiScopes()
