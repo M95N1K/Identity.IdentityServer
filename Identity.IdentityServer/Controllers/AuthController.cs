@@ -54,6 +54,13 @@ namespace Identity.IdentityServer.Controllers
         [HttpGet]
         public async Task<IActionResult> Login(string returnUrl)
         {
+
+            if (User.Identity.IsAuthenticated)
+            {
+                //return RedirectToAction("Index", "Home");
+                return Redirect(returnUrl);
+            }
+
             if (string.IsNullOrEmpty(returnUrl))
             {
                 returnUrl = "~/";
@@ -180,19 +187,16 @@ namespace Identity.IdentityServer.Controllers
             return View();
         }
 
-        [Route("[action]")]
+        [Route("[action]/{returnUrl?}")]
         [HttpGet]
-        public IActionResult ExternalRegister(ExternalRegisterViewModel model, string returnUrl)
+        public IActionResult AccessDenied(string returnUrl)
         {
-            return View(model);
-        }
+            if (string.IsNullOrEmpty(returnUrl))
+            {
+                returnUrl = "~/";
+            }
 
-        [Route("[action]")]
-        [ValidateAntiForgeryToken]
-        [HttpPost]
-        public IActionResult ExternalRegister(ExternalRegisterViewModel model)
-        {
-            return Ok();
+            return View(model: returnUrl);
         }
 
         #region Private

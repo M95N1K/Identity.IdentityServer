@@ -32,6 +32,12 @@ namespace Identity.IdentityServer.Infrastructure
                     Action = "RegisterUser",
                     DisplayName = "[Registration]"
                 },
+                new MenuViewModel
+                {
+                    Controller = "Admin",
+                    Action = "Index",
+                    DisplayName = "[Users]"
+                },
             };
 
 
