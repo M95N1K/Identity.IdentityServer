@@ -54,16 +54,14 @@ namespace Identity.IdentityServer.Controllers
         [HttpGet]
         public async Task<IActionResult> Login(string returnUrl)
         {
-
-            if (User.Identity.IsAuthenticated)
-            {
-                //return RedirectToAction("Index", "Home");
-                return Redirect(returnUrl);
-            }
-
             if (string.IsNullOrEmpty(returnUrl))
             {
                 returnUrl = "~/";
+            }
+
+            if (User.Identity.IsAuthenticated)
+            {
+                return Redirect(returnUrl);
             }
 
             var vm = await BuildLoginViewModelAsync(returnUrl);

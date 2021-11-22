@@ -2,18 +2,19 @@
 @using Microsoft.AspNetCore.Identity
 @using System.Linq
 
-@model IEnumerable<UserInfo>
+@model IEnumerable<UserInfoViewModel>
 @{
     ViewData["Title"] = "Administrator";
 }
 
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
 @if (Model.Count() > 0)
 {
     @foreach (var item in Model)
     {
         <div class="col-auto border-dark border">
             <p class="card-columns">
-                <b>Id:</b><br> @item.Id
+                <b>Id:</b><br> <a asp-action="UserInfo" asp-controller="Admin" asp-route-id="@item.Id"> @item.Id </a>
             </p>
             <p class="card-columns">
                 <b>User Name:</b><br> @item.UserName

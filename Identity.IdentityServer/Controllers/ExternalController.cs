@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
@@ -48,7 +49,7 @@ namespace HRInPocket.IdentityServer.Controllers
         [HttpGet]
         public IActionResult Challenge(string scheme, string ReturnUrl)
         {
-            //if (string.IsNullOrEmpty(ReturnUrl)) ReturnUrl = "~/";
+            if (string.IsNullOrEmpty(ReturnUrl)) ReturnUrl = "~/";
 
             // validate returnUrl - either it is a valid OIDC URL or back to a local page
             if (!Url.IsLocalUrl(ReturnUrl) && !_Interaction.IsValidReturnUrl(ReturnUrl))
@@ -201,6 +202,9 @@ namespace HRInPocket.IdentityServer.Controllers
                 filtered.Add(new Claim(JwtClaimTypes.Email, email));
             }
 
+            var birthDate = claims.FirstOrDefault(x => x.Type == JwtClaimTypes.BirthDate)?.Value ??
+                claims.FirstOrDefault(x => x.Type == ClaimTypes.DateOfBirth)?.Value ?? DateTime.Now.ToString("D");
+
             var giveName = claims.FirstOrDefault(x => x.Type == ClaimTypes.GivenName)?.Value;
             var familyName = claims.FirstOrDefault(x => x.Type == ClaimTypes.Surname)?.Value;
 
@@ -209,6 +213,8 @@ namespace HRInPocket.IdentityServer.Controllers
                 UserName = Guid.NewGuid().ToString(),
                 GivenName = giveName,
                 FamilyName = familyName,
+                Email = email,
+                Birthdate = DateTime.Parse(birthDate),
             };
             var identity_result = await _UserManager.CreateAsync(user);
 
