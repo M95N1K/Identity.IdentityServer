@@ -54,6 +54,7 @@ namespace Identity.IdentityServer.Controllers
         [HttpGet]
         public async Task<IActionResult> Login(string returnUrl)
         {
+
             if (string.IsNullOrEmpty(returnUrl))
             {
                 returnUrl = "~/";
@@ -61,6 +62,7 @@ namespace Identity.IdentityServer.Controllers
 
             if (User.Identity.IsAuthenticated)
             {
+                //return RedirectToAction("Index", "Home");
                 return Redirect(returnUrl);
             }
 
@@ -146,7 +148,11 @@ namespace Identity.IdentityServer.Controllers
         [HttpPost]
         public async Task<IActionResult> RegisterUser(RegisterViewModel model)
         {
-            
+            if (model is null)
+            {
+                ModelState.AddModelError("","Model Errorr");
+                return View();
+            }
 
             var user = await _userManager.FindByNameAsync(model.UserName);
 

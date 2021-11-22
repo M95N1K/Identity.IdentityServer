@@ -104,26 +104,5 @@ namespace Identity.IdentityServer.Controllers
 
             return View("UserInfo",model);
         }
-
-        private void EditData<TInput, TOutput>(TInput input, TOutput output)
-        {
-            var inputFild = typeof(TInput).GetProperties();
-            var outputFild = typeof(TOutput).GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.SetProperty);
-
-            for (int i = 0; i < inputFild.Length; i++)
-            {
-                var fild = inputFild[i];
-                var inputValue = fild.GetValue(input);
-                if (fild.Name == "Id")
-                    continue;
-                var outFild = outputFild.FirstOrDefault(x => x.Name == fild.Name);
-                if (outFild == null)
-                    continue;
-                var outputValue = fild.GetValue(output);
-                if (outputValue.Equals(inputValue))
-                    continue;
-                outFild.SetValue(output, inputValue);
-            }
-        }
     }
 }

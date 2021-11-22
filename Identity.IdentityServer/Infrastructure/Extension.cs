@@ -22,7 +22,7 @@ namespace Identity.IdentityServer.Infrastructure
         public static UserInfoViewModel ApplyData(this UserInfoViewModel viewModel, UserManager<User> userManager)
         {
             var user = userManager.FindByIdAsync(viewModel.Id).GetAwaiter().GetResult();
-            if(user == null)
+            if (user == null)
             {
                 throw new ArgumentException($"Пользователь с ID : {viewModel.Id} не найден!!!");
             }
@@ -56,6 +56,6 @@ namespace Identity.IdentityServer.Infrastructure
             return viewModel;
         }
 
-        
+
     }
 }
